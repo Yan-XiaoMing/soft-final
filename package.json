@@ -49,8 +49,8 @@
     "jest-environment-jsdom-fourteen": "1.0.1",
     "jest-resolve": "24.9.0",
     "jest-watch-typeahead": "0.4.2",
-    "less": "^3.11.1",
-    "less-loader": "^6.0.0",
+    "less": "^3.13.0",
+    "less-loader": "^7.1.0",
     "material-ui-dropzone": "^3.0.0",
     "moment": "^2.26.0",
     "pnp-webpack-plugin": "1.6.4",
@@ -101,7 +101,7 @@
     "build": "cross-env NODE_ENV=production node ./scripts/build.js",
     "product": "cross-env NODE_ENV=production  node scripts/start.js",
     "test:product": "cross-env NODE_ENV=production ./node_modules/.bin/cypress run --spec './cypress/integration/e2e/login.spec.js'",
-    "test:e2e":"cypress open",
+    "test:e2e": "cypress open",
     "debug": "node --inspect-brk ./node_modules/webpack/bin/webpack.js --inline --progress"
   },
   "eslintConfig": {
