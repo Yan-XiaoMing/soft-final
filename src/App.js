@@ -1,10 +1,10 @@
 import React,{lazy,Suspense}from 'react'
-import { Route, HashRouter ,Switch,Redirect} from 'react-router-dom'
+import {Route,Switch, Redirect, BrowserRouter} from 'react-router-dom'
 import store from './store'
 import { Provider } from 'react-redux'
 import Axios from 'axios'
 import loadable from './utils/loadable'
-  
+
 // const Login = loadable(() => import('./pages/login'))
 // const Register = loadable(()=>import('./pages/register'))
 // const Container = loadable(()=>import('./pages/container'))
@@ -16,7 +16,7 @@ const PasswordConf =  lazy(()=>import('./pages/passwordConf'))
 
 const App = () => {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Provider store={store}>
       <Suspense fallback={<div>Loading...</div>}>
          <Switch>
@@ -33,7 +33,7 @@ const App = () => {
        </Switch>
        </Suspense>
       </Provider>
-    </HashRouter>
+    </BrowserRouter>
   )
 }
 
