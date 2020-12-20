@@ -4,10 +4,14 @@ import {UserOutlined, LockOutlined, EyeTwoTone, EyeInvisibleOutlined} from '@ant
 import * as Yup from 'yup'
 import background from '../../assets/img/bg.png';
 import logo from '../../assets/img/hznu-logo.png';
+import Title from "./components/title/title";
+import {useDebounce} from '../../components/debounce/debounce.hook'
+import Oauth from "./components/oauth";
+import Agreement from "./components/agreement";
+import Register from "./components/register";
 import './style.styl'
 import './style.less'
-import Title from "./components/title";
-import {useDebounce} from '../../components/debounce/debounce.hook'
+
 
 const SignupSchema = Yup.object().shape({
   account: Yup.string()
@@ -155,10 +159,13 @@ const Login = () => {
               </Button>
             </Form.Item>
           </Form>
+          <Agreement />
+          <Register />
           <div className='login-divider-wrapper'>
-            <Divider/>
+            <Divider style={{margin:'10px 0 0px'}}/>
           </div>
         </div>
+        <Oauth />
         <div className='login-end'>
           杭州师范大学图书管理系统
         </div>
