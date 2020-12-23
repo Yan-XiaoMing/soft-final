@@ -11,34 +11,13 @@ import Agreement from "./components/agreement";
 import Register from "./components/register";
 import './style.styl'
 import './style.less'
+import {validatePhone} from "../../utils/utils";
 
-
-const SignupSchema = Yup.object().shape({
-  account: Yup.string()
-    .required('请输入学号')
-    .matches(/^[0-9]+$/, '学号只包含数字')
-    .length(13, '学号位数应该是13位的'),
-  password: Yup.string()
-    .required('请输入密码')
-    .matches(
-      /^[a-zA-Z0-9_]{5,}$/,
-      '密码是只由数字、大小写字母、下划线组成的至少5位的字符串'
-    ),
-  captcha: Yup.string().required('请输入验证码').length(4, '验证码有4位'),
-  policy: Yup.boolean().test({
-    name: 'policy',
-    message: '您必须同意我们的隐私政策',
-    test: (value) => {
-      console.log('this is ' + value)
-      return value
-    },
-  }),
-})
-
-const Login = () => {
-  const [showType, setShowType] = useState(2)
+const Login = (props) => {
+  const [showType, setShowType] = useState(1)
   let [timer, setTimer] = useState(60)
   const timeout = useRef(null)
+  const [form] = Form.useForm();
 
   useEffect(() => {
     if (timer != 60) {
@@ -66,6 +45,16 @@ const Login = () => {
 
   const handleCodeClick = useDebounce(codeClick, 100)
 
+  const onFinish = () => {
+    if(showType === 1){ //学号登录
+
+    }
+    else{ //短信登录
+
+    }
+    const {history} = props
+    history.replace('/')
+  }
 
   return (
     <div className='login-wrapper' style={{
@@ -82,11 +71,13 @@ const Login = () => {
         <div className='login-content'>
           <Title showType={showType} setShowType={setShowType}/>
           <Form
+            form={form}
             name="normal_login"
             className="login-form"
             initialValues={{
               remember: true
             }}
+            onFinish={onFinish}
           >
             {showType === 1 ? (
               <>
@@ -95,12 +86,12 @@ const Login = () => {
                   rules={[
                     {
                       required: true,
-                      message: '请输入您的账号!'
+                      message: '请输入您的学(工)号!'
                     }
                   ]}
                 >
                   <Input size='large' prefix={<UserOutlined className="site-form-item-icon"/>}
-                         placeholder="请输入您的账号"/>
+                         placeholder="请输入您的学(工)号"/>
                 </Form.Item>
                 <Form.Item
                   name="password"
@@ -126,7 +117,7 @@ const Login = () => {
                   rules={[
                     {
                       required: true,
-                      message: '请输入您手机号!'
+                      validator:validatePhone,
                     }
                   ]}
                 >

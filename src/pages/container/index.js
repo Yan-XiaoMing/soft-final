@@ -10,19 +10,10 @@ import { actionCreators as ac } from './store'
 import {connect} from 'react-redux';
 import SelfHeader from '../../components/header';
 import Snackbar from '@material-ui/core/Snackbar';
-// import Borrow from '../borrow';
 import Footer from '../../components/footer'
 import './style.styl';
-// import Search from '../search';
-// import PersonalCenter from '../personalcenter';
-// import Renew from '../renew';
-import loadable from '../../utils/loadable'
 
-// const Search = loadable(()=>import('../search'))
-// const Borrow = loadable(()=>import('../borrow'))
-// const PersonalCenter = loadable(()=>import('../personalcenter'))
-// const Renew = loadable(()=>import('../renew'))
-
+const Visit = lazy(()=>import('../visit'))
 const Search = lazy(()=>import('../search'))
 const Borrow = lazy(()=>import('../borrow'))
 const PersonalCenter = lazy(()=>import('../personalcenter'))
@@ -65,6 +56,7 @@ const Container = (props) => {
             <Route path="/index/borrow" component={Borrow}/>
             <Route path='/index/usercenter' component={PersonalCenter}/>
             <Route path="/index/renew" component={Renew}/>
+            <Route path='/index/visit' component={Visit}/>
             <Redirect exact from="/index" to="/index/search"/>
           </Switch>
           </Suspense>

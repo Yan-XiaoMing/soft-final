@@ -15,11 +15,7 @@ const Borrow = (props) => {
   let history = useHistory()
   // 获取store中的数据
   let {
-    select,
     login, //记录用户的登录状态
-    showAlert,
-    message,
-    messageType,
     name,
     card,
     cover,
@@ -29,71 +25,6 @@ const Borrow = (props) => {
     identity,
   } = props
 
-  //验证是否登录
-  useEffect(() => {
-    //如果内存里登录成功了，就可以直接获取数据了
-    if (login) {
-      Axios.post('/api/user/getUserData', {}).then((res) => {
-        if (res.result === 1) {
-          props.modifyUserInfo({
-            id: res.data.id,
-            card: res.data.card,
-            name: res.data.name,
-            cover: res.data.cover,
-            identity: res.data.identity,
-            hasBorrowed: res.data.hasBorrowed,
-            isBorrowing: res.data.isBorrowing,
-          })
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
-        }
-      })
-    } else {
-      //可能用户可能token是存在的，但是没有登录,如果验证成功，直接获取数据了
-      if (Token.validate()) {
-      } else {
-        //用户根本没有登录，我们尝试进行登录
-        if (props.location.search !== '') {
-          //说明是由第三方登录进来的，这个链接只有可能是通过第三方登录进来的
-          let token_array = props.location.search
-            .split('?')[1]
-            .split('&')[0]
-            .split('=')
-          if (token_array[0] === 'token') {
-            //本地没有token，那就设置一个token
-            Token.set(token_array[1])
-          } else {
-            //说明没有token，重定向到login页面进行登录
-            history.replace('/login');
-          }
-        } else {
-          history.replace('/login')
-        }
-      }
-    }
-    //用户已经登录了
-    if (!login) {
-      //如果login为false，说明用户数据也要更新
-      props.modifyLogin(true)
-      //获取用户数据
-      Axios.post('/api/user/getUserData', {}).then((res) => {
-        if (res.result === 1) {
-          props.modifyUserInfo({
-            id: res.data.id,
-            card: res.data.card,
-            name: res.data.name,
-            cover: res.data.cover,
-            identity: res.data.identity,
-            hasBorrowed: res.data.hasBorrowed,
-            isBorrowing: res.data.isBorrowing,
-          })
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
-        }
-      })
-    } else {
-    }
-  }, [])
 
   //引入steps步骤条
   const { Step } = Steps
