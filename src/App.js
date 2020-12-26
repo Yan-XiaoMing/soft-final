@@ -16,7 +16,7 @@ const App = () => {
         {/* 登陆页面 */}
         <Route path="/login" component={Login}/>
         {/* 首页路由 */}
-        <Route path="/index"   component={Container}/>
+        <Route path="/index" component={Container}/>
         {/* 忘记密码路由 */}
         <Route path="/forgotPassword"  component={PasswordConf}/>
         {/* 默认路由 */}

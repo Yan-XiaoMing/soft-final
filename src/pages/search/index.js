@@ -1,15 +1,15 @@
-import React, {useState, useEffect, useRef, useCallback} from 'react'
+import React, {useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {useHistory} from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import books from "../../config/mock/books";
-import {BackTop} from 'antd'
+import {Drawer, Divider,Timeline} from 'antd';
+import {BookOutlined, NumberOutlined, UserOutlined} from '@ant-design/icons'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'
 import SearchIcon from '@material-ui/icons/Search'
-import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardContent from '@material-ui/core/CardContent'
@@ -20,6 +20,8 @@ import {actionCreators as frameac} from '../container/store'
 import {actionCreators as borrowac} from '../borrow/store'
 import SearchTab from "../../components/searchTab";
 import pannelData from '../../config/mock/pannelData'
+import publicer from '../../assets/img/public.svg'
+import location from '../../assets/img/location.svg'
 import './style.styl'
 
 const useStyles = makeStyles((theme) => ({
@@ -76,6 +78,7 @@ const Search = (props) => {
   const [borrowingBooks, setBorrowingBooks] = useState([])
   const [functionButtonStyle, setFunctionButtonStyle] = useState(1)
   const [visible, setVisible] = useState(false)
+  const [showDetail,setShowDetail] = useState(false)
   let {login} = props //登陆的标志符
 
   //获取book的数据，直接返回
@@ -124,6 +127,14 @@ const Search = (props) => {
   //     }
   //   }
   // }, [])
+
+  const showDetailClose = () => {
+    setShowDetail(false)
+  }
+
+  const showDetailOpen = () => {
+    setShowDetail(true)
+  }
 
   //修改当前所在的图书馆
   const handleChangeLibrary = (value) => {
@@ -271,25 +282,6 @@ const Search = (props) => {
                       <div className="closeButton" onClick={() => hideSummary()}>
                         <CloseIcon width='20px' height='20px' style={{width: '20px', height: '20px'}}/>
                       </div>
-                      <div className="searchMainData">
-                        <div className="searchBookName">{pannelData[index][0].name}</div>
-                        <div className="searchBookItem">
-                          <span className="searchBookBefore">作者</span> |{' '}
-                          {pannelData[index][0].author}
-                        </div>
-                        <div className="searchBookItem">
-                          <span className="searchBookBefore">出版社</span> |{' '}
-                          {pannelData[index][0].publisher}
-                        </div>
-                        <div className="searchBookItem">
-                          <span className="searchBookBefore">书籍位置</span> |{' '}
-                          {pannelData[index][0].place}
-                        </div>
-                        <div className="searchBookItem">
-                          <span className="searchBookBefore">剩余可借</span> |{' '}
-                          {pannelData[index][0].state}
-                        </div>
-                      </div>
                       <div className="searchBookMore">
                         <img src={pannelData[index][0].cover} className="searchBookImg"/>
                         <h3 className='book-detail-name'
@@ -310,7 +302,7 @@ const Search = (props) => {
                                 <Button
                                   size="small"
                                   className="positiveButton"
-                                  onClick={() => borrowBook(pannelData.id)}>
+                                  onClick={() => showDetailOpen()}>
                                   详情
                                 </Button>
                               </div>
@@ -364,13 +356,53 @@ const Search = (props) => {
                                 <Button
                                   size="small"
                                   className="positiveButton"
-                                  onClick={() => borrowBook(pannelData.id)}>
+                                  onClick={() => showDetailOpen()}>
                                   详情
                                 </Button>
                               </div>
                             ) : null
                         }
                       </div>
+                      <Drawer
+                        title="图书详情"
+                        width={340}
+                        placement="right"
+                        closable
+                        onClose={showDetailClose}
+                        visible={showDetail}
+                      >
+                        <Timeline className=''>
+                          <Timeline.Item dot={<BookOutlined  style={{ fontSize: '20px' }} />} >
+                            <h1 className='book-detail-item-title'>
+                              书籍名称:
+                            </h1>
+                            <p>{pannelData[index][0].name}</p>
+                          </Timeline.Item>
+                          <Timeline.Item  dot={<UserOutlined  style={{ fontSize: '20px' }} />} >
+                            <h1 className='book-detail-item-title'>
+                              作者:
+                            </h1>
+                            <p>{pannelData[index][0].author}</p>
+                          </Timeline.Item>
+                          <Timeline.Item dot={<img width='20px' src={publicer} alt='出版社'/>}>
+                            <h1 className='book-detail-item-title'>
+                              出版社:
+                            </h1>
+                            <p> {pannelData[index][0].publisher}</p>
+                          </Timeline.Item>
+                          <Timeline.Item dot={<img width='20px' src={location} alt='出版社'/>}>
+                            <h1 className='book-detail-item-title'>
+                              书籍位置:
+                            </h1>
+                            <p>{pannelData[index][0].place}</p>
+                          </Timeline.Item>
+                          <Timeline.Item dot={<NumberOutlined style={{ fontSize: '20px' }} /> } color={pannelData[index][0].state>0?'green':'red'}>
+                            <h1 className='book-detail-item-title'>
+                              可借数量: {pannelData[index][0].state}
+                            </h1>
+                          </Timeline.Item>
+                        </Timeline>
+                      </Drawer>
                     </div>
                   ) : null}
                 </div>
@@ -378,9 +410,6 @@ const Search = (props) => {
             })}
         </div>
       </div>
-      <BackTop>
-        <div className="back-top-button"><ArrowUpwardIcon/></div>
-      </BackTop>
       <SearchTab visible={visible} setVisible={setVisible}/>
     </div>
   )
