@@ -7,21 +7,24 @@ import HZNUImg from '../../assets/img/hznu-logo.png'
 import {useHistory} from 'react-router-dom';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import SettingsIcon from '@material-ui/icons/Settings';
-import Token from '../../utils/token';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import './style.styl';
+import {logoutUser} from "../../pages/login/store/actionCreators";
 import HeaderBg from "../header-bg";
+import {isEmptyObject} from "../../utils/utils";
+import boy from '../../assets/img/boy.svg'
+import girl from '../../assets/img/girl.svg'
+import './style.styl';
 
 const Header = props => {
+
   const history = useHistory();
   //存储是否显示用户信息的下拉菜单
   const [open, setOpen] = useState(false);
 
   //退出当前账号的业务逻辑
   const handleLogout = () => {
-    Token.fail();
-    props.modifyLogin(false);
+    props.logoutUser();
   };
 
   return (
@@ -46,7 +49,7 @@ const Header = props => {
         </Nav>
         <Nav>
           <div className="header-user-info">
-            {!props.login && !Token.validate() ?
+            {isEmptyObject(props.user) ?
               <ul className="header-user-login-register header_link">
                 <li>
                   <Nav.Link onClick={() => history.push('/login')}>登录</Nav.Link>
@@ -57,8 +60,8 @@ const Header = props => {
                   <div className="header-avatar-wrapper"
                        onMouseEnter={() => setOpen(true)}
                        onMouseLeave={() => setOpen(false)}>
-                    <Avatar src={props.cover}/>
-                    <span className="header-avatar-name">{props.name}</span>
+                    {props.user.sex === 0 ?<Avatar src={boy}/> : <Avatar src={girl}/>}
+                    <span className="header-mini-name">{props.user.name}</span>
                     <ArrowDropDownIcon className="header-avatar-dropdown-icon"/>
                     {
                       open ?
@@ -82,8 +85,8 @@ const Header = props => {
                 ) : (
                   <div className="header-mini-wrapper">
                     <div>
-                      <Avatar src={props.cover}/>
-                      <span className="header-mini-name">{props.name}</span>
+                      {props.user.sex === 0 ?<Avatar src={boy}/> : <Avatar src={girl}/>}
+                      <span className="header-mini-name">{props.user.name}</span>
                     </div>
                     <ul className="user-info-mini-board-list m-0 mr-4">
                       <li onClick={() => history.push('/index/usercenter')}>
@@ -104,7 +107,8 @@ const Header = props => {
   );
 };
 
-const mapState = (state) => ({
+const mapStateToProps = (state) => ({
+  user:state.loginUser.user,
   login: state.frame.get('login'),
   select: state.frame.get('select'),
   showAlert: state.frame.get('showAlert'),
@@ -119,15 +123,13 @@ const mapDispatch = (dispatch) => ({
   modifySelect(key) {
     dispatch(frameac.modifySelect(key));
   },
-  modifyLogin(state) {
-    dispatch(frameac.modifyLogin(state));
-  },
   modifyUserInfo(info) {
     dispatch(frameac.modifyUserInfo(info));
   },
   modifyShowAlert(show, message, type) {
     dispatch(frameac.modifyShowAlert(show, message, type));
   },
+  logoutUser: () => dispatch(logoutUser())
 });
 
-export default connect(mapState, mapDispatch)(Header)
+export default connect(mapStateToProps, mapDispatch)(Header)

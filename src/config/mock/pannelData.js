@@ -6,7 +6,8 @@ const pannelData = [
     publisher:"北京联合出版有限公司",
     place:"图书馆二楼南①区 14排A面1列1层",
     state:"10",
-    cover:"http://img3m5.ddimg.cn/37/6/28983475-5_u_10.jpg"
+    cover:"http://img3m5.ddimg.cn/37/6/28983475-5_u_10.jpg",
+    isBorrow:false
   }],
   [{
     id:"2",
@@ -15,7 +16,8 @@ const pannelData = [
     publisher:"商务印书馆",
     place:"图书馆二楼南①区 12排A面2列5层",
     state:"8",
-    cover:"http://img3m8.ddimg.cn/70/3/29133988-5_u_3.jpg"
+    cover:"http://img3m8.ddimg.cn/70/3/29133988-5_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"3",
@@ -24,7 +26,8 @@ const pannelData = [
     publisher:"海南出版社",
     place:"图书馆二楼南①区 11排A面3列5层",
     state:"5",
-    cover:"http://img3m0.ddimg.cn/83/24/29140040-7_u_3.jpg"
+    cover:"http://img3m0.ddimg.cn/83/24/29140040-7_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"4",
@@ -33,7 +36,8 @@ const pannelData = [
     publisher:"江苏凤凰文艺出版社",
     place:"图书馆二楼西①区 8排A面3列5层",
     state:"12",
-    cover:"http://img3m2.ddimg.cn/14/2/28509242-4_u_6.jpg"
+    cover:"http://img3m2.ddimg.cn/14/2/28509242-4_u_6.jpg",
+    isBorrow:false
   }],
   [{
     id:"5",
@@ -42,7 +46,8 @@ const pannelData = [
     publisher:"江西美术出版社",
     place:"图书馆二楼南①区 2排B面2列5层",
     state:"1",
-    cover:"http://img3m8.ddimg.cn/84/16/29137368-5_u_7.jpg"
+    cover:"http://img3m8.ddimg.cn/84/16/29137368-5_u_7.jpg",
+    isBorrow:false
   }],
   [{
     id:"6",
@@ -51,7 +56,8 @@ const pannelData = [
     publisher:"湖南科技出版社",
     place:"图书馆二楼北①区 7排B面1列3层",
     state:"3",
-    cover:"http://img3m2.ddimg.cn/42/9/29136732-5_u_3.jpg"
+    cover:"http://img3m2.ddimg.cn/42/9/29136732-5_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"7",
@@ -60,7 +66,8 @@ const pannelData = [
     publisher:"辽宁少年儿童出版社",
     place:"图书馆二楼西①区 11排B面6列5层",
     state:"2",
-    cover:"http://img3m2.ddimg.cn/52/20/28517992-5_u_2.jpg"
+    cover:"http://img3m2.ddimg.cn/52/20/28517992-5_u_2.jpg",
+    isBorrow:false
   }],
   [{
     id:"8",
@@ -69,7 +76,8 @@ const pannelData = [
     publisher:"化学工业出版社",
     place:"图书馆二楼北①区 11排A面3列5层",
     state:"4",
-    cover:"http://img3m3.ddimg.cn/66/19/29150913-5_u_13.jpg"
+    cover:"http://img3m3.ddimg.cn/66/19/29150913-5_u_13.jpg",
+    isBorrow:false
   }],
   [{
     id:"9",
@@ -78,7 +86,8 @@ const pannelData = [
     publisher:"时代文艺出版社",
     place:"图书馆二楼东①区 3排B面12列1层",
     state:"6",
-    cover:"http://img3m4.ddimg.cn/46/23/26487694-5_u_3.jpg"
+    cover:"http://img3m4.ddimg.cn/46/23/26487694-5_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"10",
@@ -87,7 +96,8 @@ const pannelData = [
     publisher:"人民文学出版社",
     place:"图书馆二楼北①区 1排A面1列3层",
     state:"5",
-    cover:"http://img3m4.ddimg.cn/48/32/28991604-4_u_3.jpg"
+    cover:"http://img3m4.ddimg.cn/48/32/28991604-4_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"11",
@@ -96,7 +106,8 @@ const pannelData = [
     publisher:"四川人民出版社",
     place:"图书馆二楼北①区 7排B面4列2层",
     state:"2",
-    cover:"http://img3m5.ddimg.cn/3/22/29137485-5_u_9.jpg"
+    cover:"http://img3m5.ddimg.cn/3/22/29137485-5_u_9.jpg",
+    isBorrow:false
   }],
   [{
     id:"12",
@@ -105,7 +116,8 @@ const pannelData = [
     publisher:"人民文学出版社",
     place:"图书馆二楼南①区 7排B面2列1层",
     state:"8",
-    cover:"http://img3m3.ddimg.cn/7/6/29124223-3_u_3.jpg"
+    cover:"http://img3m3.ddimg.cn/7/6/29124223-3_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"13",
@@ -114,7 +126,8 @@ const pannelData = [
     publisher:"台海出版社",
     place:"图书馆二楼南①区 11排A面12列2层",
     state:"6",
-    cover:"http://img3m1.ddimg.cn/98/3/29151341-8_u_6.jpg"
+    cover:"http://img3m1.ddimg.cn/98/3/29151341-8_u_6.jpg",
+    isBorrow:false
   }],
   [{
     id:"14",
@@ -123,7 +136,8 @@ const pannelData = [
     publisher:"海南出版社",
     place:"图书馆二楼西①区 5排A面7列4层",
     state:"7",
-    cover:"http://img3m0.ddimg.cn/25/13/29128300-5_u_3.jpg"
+    cover:"http://img3m0.ddimg.cn/25/13/29128300-5_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"15",
@@ -132,7 +146,8 @@ const pannelData = [
     publisher:"中国妇女出版社",
     place:"图书馆二楼西①区 7排B面7列4层",
     state:"2",
-    cover:"http://img3m3.ddimg.cn/56/34/29140013-3_u_6.jpg"
+    cover:"http://img3m3.ddimg.cn/56/34/29140013-3_u_6.jpg",
+    isBorrow:false
   }],
   [{
     id:"16",
@@ -141,7 +156,8 @@ const pannelData = [
     publisher:"天地出版社",
     place:"图书馆二楼南①区 3排A面3列3层",
     state:"3",
-    cover:"http://img3m1.ddimg.cn/61/21/29145661-7_u_9.jpg"
+    cover:"http://img3m1.ddimg.cn/61/21/29145661-7_u_9.jpg",
+    isBorrow:false
   }],
   [{
     id:"17",
@@ -150,7 +166,8 @@ const pannelData = [
     publisher:"北京联合出版有限公司",
     place:"图书馆二楼北①区 11排B面6列3层",
     state:"5",
-    cover:"http://img3m0.ddimg.cn/55/35/29133280-4_u_9.jpg"
+    cover:"http://img3m0.ddimg.cn/55/35/29133280-4_u_9.jpg",
+    isBorrow:false
   }],
   [{
     id:"18",
@@ -159,7 +176,8 @@ const pannelData = [
     publisher:"北京日报出版社（原同心出版社）",
     place:"图书馆二楼西①区 6排B面11列1层",
     state:"1",
-    cover:"http://img3m5.ddimg.cn/63/14/28978155-8_u_3.jpg"
+    cover:"http://img3m5.ddimg.cn/63/14/28978155-8_u_3.jpg",
+    isBorrow:false
   }],
   [{
     id:"19",
@@ -168,7 +186,8 @@ const pannelData = [
     publisher:"上海文化出版社",
     place:"图书馆二楼北①区 2排A面11列3层",
     state:"2",
-    cover:"http://img3m3.ddimg.cn/28/11/28559053-6_u_17.jpg"
+    cover:"http://img3m3.ddimg.cn/28/11/28559053-6_u_17.jpg",
+    isBorrow:false
   }],
   [{
     id:"20",
@@ -177,7 +196,8 @@ const pannelData = [
     publisher:"广西师范大学出版社",
     place:"图书馆二楼南①区 11排B面4列4层",
     state:"4",
-    cover:"http://img3m7.ddimg.cn/11/26/29114327-8_u_5.jpg"
+    cover:"http://img3m7.ddimg.cn/11/26/29114327-8_u_5.jpg",
+    isBorrow:false
   }]
 ]
 

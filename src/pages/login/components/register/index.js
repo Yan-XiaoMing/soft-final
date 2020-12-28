@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
-import {Drawer, Form, Button, Col, Row, Input, Select, Popconfirm} from 'antd';
-import {validatePhone, validateID} from "../../../../utils/utils";
+import {Drawer, Form, Button, Col, Row, Input, Select, Popconfirm,message} from 'antd';
+import {validatePhone, validateID, checkResponse} from "../../../../utils/utils";
+import {createUser} from "../../../../api/user";
 import './style.less'
 
 const {Option} = Select;
 
 const Register = () => {
 
-  const [visible, setVisible] = useState(true)
+  const [visible, setVisible] = useState(false)
 
   const [form] = Form.useForm();
 
@@ -16,16 +17,25 @@ const Register = () => {
   };
   const onClose = () => {
     setVisible(false)
-    setTimeout(()=>{
+    setTimeout(() => {
       form.resetFields()
-    },300)
+    }, 300)
   };
 
-  const onSubmit = () => {
-    const validate = form.validateFields()
+  const onSubmit = async () => {
+    const validate = await form.validateFields()
     console.log(validate)
     const value = form.getFieldsValue()
-    console.log(value)
+    delete value.password2
+
+    const result = await createUser(value)
+    if(checkResponse(result)){
+      message.success('注册成功')
+      onClose()
+    }
+    else{
+      message.error(result.data.errMsg)
+    }
   }
 
   return (
@@ -72,7 +82,7 @@ const Register = () => {
                 rules={[{required: true, message: '请输入您的姓名'}]}
                 hasFeedback
               >
-                <Input  placeholder="请输入您的姓名"/>
+                <Input placeholder="请输入您的姓名"/>
               </Form.Item>
             </Col>
             <Col span={12}>
@@ -82,7 +92,7 @@ const Register = () => {
                 label="学(工)号"
                 rules={[{required: true, message: '请输入您的学(工)号'}]}
               >
-                <Input  placeholder="请输入您的学(工)号"/>
+                <Input placeholder="请输入您的学(工)号"/>
               </Form.Item>
             </Col>
           </Row>
@@ -91,7 +101,10 @@ const Register = () => {
               <Form.Item
                 name="password"
                 label="密码"
-                rules={[{required: true, message: '请输入您的密码'},{min:6,message:'密码不能少于6位'},{max:12,message:'密码不能大于12位'}]}
+                rules={[{required: true, message: '请输入您的密码'}, {min: 6, message: '密码不能少于6位'}, {
+                  max: 12,
+                  message: '密码不能大于12位'
+                }]}
                 hasFeedback
               >
                 <Input.Password placeholder="请输入您的密码"/>
@@ -103,7 +116,7 @@ const Register = () => {
                 label="密码确认"
                 rules={[
                   {required: true, message: '请再次输入您的密码'},
-                  ({ getFieldValue }) => ({
+                  ({getFieldValue}) => ({
                     validator(rule, value) {
                       if (!value || getFieldValue('password') === value) {
                         return Promise.resolve();
@@ -114,7 +127,7 @@ const Register = () => {
                 ]}
                 hasFeedback
               >
-                <Input.Password  placeholder="请输入您的密码"/>
+                <Input.Password placeholder="请输入您的密码"/>
               </Form.Item>
             </Col>
           </Row>
@@ -126,7 +139,7 @@ const Register = () => {
                 rules={[{required: true, message: '请选择您的性别'}]}
                 hasFeedback
               >
-                <Select  placeholder="请选择您的性别">
+                <Select placeholder="请选择您的性别">
                   <Option value="0">男</Option>
                   <Option value="1">女</Option>
                 </Select>
@@ -138,19 +151,19 @@ const Register = () => {
                 label="身份"
                 rules={[{required: true, message: '请选择您的身份(职位)'}]}
               >
-                <Select  placeholder="请选择您的身份(职位)">
+                <Select placeholder="请选择您的身份(职位)">
                   <Option value="0">校工作人员(非教师)</Option>
                   <Option value="1">本科生</Option>
                   <Option value="2">研究生</Option>
-                  <Option value="3">教师</Option>
+                  <Option value="3">教师(授)</Option>
                 </Select>
               </Form.Item>
             </Col>
           </Row>
           <Form.Item
-            name="idNum"
+            name="idNumber"
             label="身份证号"
-            rules={[{required: true,validator: validateID}]}
+            rules={[{required: true, validator: validateID}]}
             hasFeedback
           >
             <Input placeholder="请输入您的身份证号"/>
@@ -158,7 +171,7 @@ const Register = () => {
           <Form.Item
             name="phone"
             label="手机号"
-            rules={[{required: true,validator: validatePhone}]}
+            rules={[{required: true, validator: validatePhone}]}
             hasFeedback
           >
             <Input placeholder="请输入您的手机号"/>
@@ -166,8 +179,7 @@ const Register = () => {
         </Form>
       </Drawer>
     </>
-  )
-    ;
+  );
 };
 
 export default Register;

@@ -1,31 +1,28 @@
 import React, { useEffect, useCallback, useContext } from 'react'
-import './style.styl'
-import { StoreContext } from 'redux-react-hook'
-import { Steps, Row, Col, Card, Avatar } from 'antd'
+import { Steps,  Card, Avatar,message} from 'antd'
 import { connect } from 'react-redux'
 import Check from './check'
 import Inspect from './inspect';
 import Process from './process';
 import {actionCreators as frameac} from '../container/store';
 import { Route, Redirect, useHistory, Switch } from 'react-router-dom'
-import Token from '../../utils/token'
-import Axios from '../../utils/request'
+import {changeNum2StrType, isEmptyObject} from "../../utils/utils";
+import boy from '../../assets/img/boy.svg'
+import girl from '../../assets/img/girl.svg'
+import './style.styl'
 //borrow组件
 const Borrow = (props) => {
   let history = useHistory()
   // 获取store中的数据
   let {
-    login, //记录用户的登录状态
-    name,
-    card,
-    cover,
     hasBorrowed,
     isBorrowing,
     step,
     identity,
+    user,
+    borrowBooks,
+    shopList
   } = props
-
-
   //引入steps步骤条
   const { Step } = Steps
   const gridStyle = {
@@ -34,11 +31,13 @@ const Borrow = (props) => {
   }
 
   //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
-  useEffect(()=>{
-    if(login || Token.validate()){
-    }else
-        history.replace('/login')
-  },[login])
+  // useEffect(()=>{
+  //   console.log(user)
+  //   if(isEmptyObject(user)){
+  //     message.warning('请先进行登录')
+  //     history.replace('/login')
+  //   }
+  // },[])
 
   return (
     <div className="borrowWrapper">
@@ -51,21 +50,21 @@ const Borrow = (props) => {
         </Steps>
       </div>
       <div className="infoLine">
-              <Card
-                className="infoCard"
-                title="用户信息"
-                extra={<Avatar size="small" src={cover} />}
-              >
-                <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
-                <Card.Grid style={gridStyle}>姓名 | {name}</Card.Grid>
-                <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  已借阅 | {hasBorrowed} 本
-                </Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  正在借阅 | {isBorrowing} 本
-                </Card.Grid>
-              </Card>
+        <Card
+          className="infoCard"
+          title="用户信息"
+          extra={user.sex === 0 ?<Avatar size="small" src={boy} />:<Avatar size='small' src={girl}/>}
+        >
+          <Card.Grid style={gridStyle}>学号 | {user.username}</Card.Grid>
+          <Card.Grid style={gridStyle}>姓名 | {user.name}</Card.Grid>
+          <Card.Grid style={gridStyle}>身份 | {changeNum2StrType(user.type)}</Card.Grid>
+          <Card.Grid style={gridStyle}>
+            已借阅 | {borrowBooks.length} 本
+          </Card.Grid>
+          <Card.Grid style={gridStyle}>
+            我的书单 | {shopList.length} 本
+          </Card.Grid>
+        </Card>
           <div className="infoRight">
             <Switch>
               <Route path="/index/borrow/check" component={Check} />
@@ -80,13 +79,14 @@ const Borrow = (props) => {
 }
 
 const mapState = (state) => ({
-  login: state.frame.get('login'),
+  user: state.loginUser.user,
+  borrowBooks: state.bookData.borrowBooks,
+  shopList: state.bookData.shopList,
   showAlert: state.frame.get('showAlert'),
   message: state.frame.get('message'),
   messageType: state.frame.get('messsageType'),
   name: state.frame.get('name'),
   card: state.frame.get('card'),
-  cover: state.frame.get('cover'),
   hasBorrowed: state.frame.get('hasBorrowed'),
   isBorrowing: state.frame.get('isBorrowing'),
   step: state.borrow.get('step'),

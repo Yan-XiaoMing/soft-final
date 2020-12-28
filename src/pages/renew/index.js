@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback, useContext, useState } from 'react'
 import './style.styl'
 import { StoreContext } from 'redux-react-hook'
-import { Steps, Row, Col, Card, Avatar ,Table,Button,Progress} from 'antd'
+import {Steps, Row, Col, Card, Avatar, Table, Button, Progress, message} from 'antd'
 import { connect } from 'react-redux'
 import { actionCreators as frameac } from '../container/store'
 import { Route, Redirect, useHistory, Switch } from 'react-router-dom'
@@ -10,124 +10,35 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Token from '../../utils/token'
-import Axios from '../../utils/request'
 import Config from '../../config'
+import {changeNum2StrType, isEmptyObject} from "../../utils/utils";
+import boy from "../../assets/img/boy.svg";
+import girl from "../../assets/img/girl.svg";
 //borrow组件
 const Renew = (props) => {
   console.log(props)
   const [listData,setListData] = useState([])
-  const [hasExceed,setHasExceed] = useState(false) 
+  const [hasExceed,setHasExceed] = useState(false)
   const [openDialog,setOpenDialog] = useState(false)
   const [dialogBook,setDialogBook] = useState({})
   let history = useHistory()
   // 获取store中的数据
   let {
-    select,
-    login, //记录用户的登录状态
-    showAlert,
-    message,
-    messageType,
-    name,
-    card,
     cover,
     hasBorrowed,
     isBorrowing,
     step,
     identity,
+    user,
+    borrowBooks,
+    shopList
   } = props
 
-
-  //如果login状态发生变化，就要重新查看是否有进入usercenter的权限
   useEffect(()=>{
-    if(login || Token.validate()){
-    }else
-        history.replace('/login')
-  },[login])
-
-  //验证是否登录
-  useEffect(() => {
-    //如果内存里登录成功了，就可以直接获取数据了
-    if (login) {
-      Axios.post('/api/user/getUserData', {}).then((res) => {
-        if (res.result === 1) {
-          props.modifyUserInfo({
-            id: res.data.id,
-            card: res.data.card,
-            name: res.data.name,
-            cover: res.data.cover,
-            identity: res.data.identity,
-            hasBorrowed: res.data.hasBorrowed,
-            isBorrowing: res.data.isBorrowing,
-          })
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
-        }
-      })
-    } else {
-      //可能用户可能token是存在的，但是没有登录,如果验证成功，直接获取数据了
-      if (Token.validate()) {
-      } else {
-        //用户根本没有登录，我们尝试进行登录
-        if (props.location.search !== '') {
-          //说明是由第三方登录进来的，这个链接只有可能是通过第三方登录进来的
-          let token_array = props.location.search
-            .split('?')[1]
-            .split('&')[0]
-            .split('=')
-          if (token_array[0] === 'token') {
-            //本地没有token，那就设置一个token
-            Token.set(token_array[1])
-          } else {
-            //说明没有token，重定向到login页面进行登录
-            history.replace('/login') 
-          }
-        } else {
-          history.replace('/login')
-        }
-      }
+    if(isEmptyObject(props.user)){
+      message.warning('请先进行登录')
+      history.replace('/login')
     }
-    //用户已经登录了
-    if (!login) {
-      //如果login为false，说明用户数据也要更新
-      props.modifyLogin(true)
-      //获取用户数据
-      Axios.post('/api/user/getUserData', {}).then((res) => {
-        if (res.result === 1) {
-          props.modifyUserInfo({
-            id: res.data.id,
-            card: res.data.card,
-            name: res.data.name,
-            cover: res.data.cover,
-            identity: res.data.identity,
-            hasBorrowed: res.data.hasBorrowed,
-            isBorrowing: res.data.isBorrowing,
-          })
-        } else {
-          props.modifyShowAlert(true, '获取您的信息失败', 'error')
-        }
-      })
-    } else {
-    }
-  }, [])
-  
-  useEffect(()=>{
-    // if(login){
-     Axios.post('/api/user/getUserIsBorrowingBook',{})
-     .then(res=>{
-         //获取用户正在借阅书籍成功
-         if(res.result === 1){
-             setListData(res.data)
-             res.data.map((item,index)=>{
-               if(item.distance < 0){
-                 setHasExceed(true)
-                }
-             })
-         }else{
-             props.modifyShowAlert(true,"获取用户已借书籍失败","error")
-         }
-     })
-    // }
   },[])
 
   //引入steps步骤条
@@ -138,24 +49,24 @@ const Renew = (props) => {
   }
 
   //求借书时间百分比
-  const getBorrowDurationPersent = (text,record)=>{
-     if(record.isReborrow)
-         return  parseInt((Config.getBorrowDuration(identity) + 30- parseInt(text))/ (Config.getBorrowDuration(identity) + 30) * 100)
-     else
-        return  parseInt((Config.getBorrowDuration(identity)- parseInt(text))/ Config.getBorrowDuration(identity) * 100)
+  const getPresentNumber = (time) => {
+    console.log(time)
+    if(time>30){
+      return 100
+    }
+    if (time>0){
+      return Math.floor(time/30*100)
+    } else{
+      return 0
+    }
   }
-  
+
   const columns = [
     {
       title: '书封',
       dataIndex: 'cover',
       key: 'cover',
-      render: (text, record, index) => <Avatar src={text} />,
-    },
-    {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
+      render: (cover, record, index) => <Avatar src={cover} />,
     },
     {
       title: '书名',
@@ -179,9 +90,9 @@ const Renew = (props) => {
       render: (text,record)=>{
           return (
            <div className="remainDateInfo">
-             <Progress showInfo={false} percent={getBorrowDurationPersent(text,record)} status={getBorrowDurationPersent(text,record) >= 90? "exception":"active"} />
+             <Progress showInfo={false} percent={getPresentNumber(text)} strokeColor={getPresentNumber(text) >= 85? "#52c41a":getPresentNumber(text) >= 40?"#1890ff":'#ff4d4f'} />
              &nbsp;&nbsp;
-             <span className="remainDateInfoText">{(parseInt(text) < 0 ? `超${Math.abs(parseInt(text))}天`:`剩${text}天`)}</span>
+             <span className="remainDateInfoText">{(parseInt(text) < 0 ? `超出了${Math.abs(parseInt(text))}天`:`剩余${text}天`)}</span>
              </div>
           )
       }
@@ -218,23 +129,6 @@ const Renew = (props) => {
     setOpenDialog(true)
   }
 
-  //按下续借按钮，发起续借
-  const setRenewBook = ()=>{
-    console.log(dialogBook)
-    Axios.post('/api/book/extendBorrow',{bookId:dialogBook.id}).then(res=>{
-      if(res.result === 1){
-          let newListData = listData.concat()
-          newListData[dialogBook.index].distance += 30 //时间增加30天
-          newListData[dialogBook.index].isReborrow = true
-          setListData(newListData)
-      }
-      else{
-          props.modifyShowAlert(true,'续借失败',"error")
-      }
-    })
-    setOpenDialog(false)
-  }
-
   return (
     <div className="renewWrapper">
        <Dialog
@@ -252,30 +146,30 @@ const Renew = (props) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button type="primary"  color="primary"  onClick={()=>setRenewBook()}>
-             是的
+          <Button type="primary"  color="primary"  onClick={()=>{message.success('续借成功')}}>
+             确定
           </Button>
           <Button color="primary"  onClick={()=>setOpenDialog(false)}>
-             再考虑考虑
+             取消
           </Button>
         </DialogActions>
       </Dialog>
       <div className="infoLine">
-              <Card
-                className="infoCard"
-                title="用户信息"
-                extra={<Avatar size="small" src={cover} />}
-              >
-                <Card.Grid style={gridStyle}>卡号 | {card}</Card.Grid>
-                <Card.Grid style={gridStyle}>姓名 | {name}</Card.Grid>
-                <Card.Grid style={gridStyle}>身份 | {identity}</Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  已借阅 | {hasBorrowed} 本
-                </Card.Grid>
-                <Card.Grid style={gridStyle}>
-                  正在借阅 | {isBorrowing} 本
-                </Card.Grid>
-              </Card>
+        <Card
+          className="infoCard"
+          title="用户信息"
+          extra={user.sex === 0 ?<Avatar size="small" src={boy} />:<Avatar size='small' src={girl}/>}
+        >
+          <Card.Grid style={gridStyle}>学号 | {user.username}</Card.Grid>
+          <Card.Grid style={gridStyle}>姓名 | {user.name}</Card.Grid>
+          <Card.Grid style={gridStyle}>身份 | {changeNum2StrType(user.type)}</Card.Grid>
+          <Card.Grid style={gridStyle}>
+            已借阅 | {borrowBooks.length} 本
+          </Card.Grid>
+          <Card.Grid style={gridStyle}>
+            我的书单 | {shopList.length} 本
+          </Card.Grid>
+        </Card>
       </div>
       <div className="renewbookWrapper">
       <Card title="温馨提示" bordered={false} size="small" className="tipsCard">
@@ -285,9 +179,9 @@ const Renew = (props) => {
       </Card>
       <Table
         pagination={false}
-        rowKey="table"
+        rowKey={record => record.id}
         className="table"
-        dataSource={listData}
+        dataSource={borrowBooks}
         columns={columns}
       />
     </div>
@@ -295,8 +189,10 @@ const Renew = (props) => {
   )
 }
 
-const mapState = (state) => ({
-  login: state.frame.get('login'),
+const mapStateToProps = (state) => ({
+  user: state.loginUser.user,
+  borrowBooks: state.bookData.borrowBooks,
+  shopList: state.bookData.shopList,
   showAlert: state.frame.get('showAlert'),
   message: state.frame.get('message'),
   messageType: state.frame.get('messsageType'),
@@ -309,7 +205,7 @@ const mapState = (state) => ({
   identity: state.frame.get('identity'),
 })
 
-const mapDispatch = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
   //修改用户的数据
   modifyUserInfo(info) {
     dispatch(frameac.modifyUserInfo(info))
@@ -322,4 +218,4 @@ const mapDispatch = (dispatch) => ({
   },
 })
 
-export default connect(mapState, mapDispatch)(Renew)
+export default connect(mapStateToProps, mapDispatchToProps)(Renew)

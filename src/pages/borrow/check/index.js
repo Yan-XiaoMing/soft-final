@@ -3,8 +3,6 @@ import { Card, List, Avatar, Space, Button, Spin, Tag, message } from 'antd'
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
 import { connect } from 'react-redux'
 import { actionCreators as frameac} from '../../container/store'
-import Axios from '../../../utils/request'
-import axios from 'axios'
 import { actionCreators } from '../store'
 import './style.styl'
 import { Redirect,useHistory } from 'react-router-dom'
@@ -18,21 +16,7 @@ const Check = (props) => {
   useEffect(() => {
     props.changeStep(0)
     let newListData = listData.concat()
-    let axioses = []
-    bookData.map((item, index) => {
-      axioses.push(
-        Axios.post('/api/book/searchBookData', {
-          bookId: parseInt(item),
-        })
-      )
-    })
-    //封装了两个并行请求
-    Axios.all(axioses).then(axios.spread((...res) => {
-      let resListData = []
-      res.forEach(value => resListData.push(value.data))
-       setListData(resListData)
-       if(resListData.length > 0) setNext(true)
-    }))
+
   }, [])
 
   //按照书的状态生成字符串
@@ -47,7 +31,7 @@ const Check = (props) => {
   const bookStateToColor = (state) => {
     if (state >= 1)
       return '#87d068'
-    else 
+    else
       return '#f50'
   }
 
@@ -63,7 +47,7 @@ const Check = (props) => {
     let newBookData = null
     if(typeof props.bookData._tail !== 'undefined')
        newBookData = props.bookData._tail.array.concat([])
-    else 
+    else
        newBookData = props.bookData
     newBookData.splice(index, 1)
     props.commitBorrowBook(newBookData)
@@ -77,7 +61,7 @@ const Check = (props) => {
 
 
   return (
-    <div className="readrfidWrapper">  
+    <div className="readrfidWrapper">
     <Card title="温馨提示" bordered={false} size="small" className="tipsCard">
         <p>
           请在下方操作您要借阅的图书，如果您希望添加新图书，请<span className="link" onClick={()=>history.push('/index/search')}>前往“搜索”页面</span>来添加新图书。
@@ -136,6 +120,7 @@ const Check = (props) => {
 }
 
 const mapState = (state) => ({
+
   isBorrowing: state.frame.get('isBorrowing'),
   bookData: state.borrow.get('bookData'),
 })

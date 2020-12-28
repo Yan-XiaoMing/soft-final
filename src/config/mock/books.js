@@ -4,140 +4,160 @@ const books = [
     name:"欢喜：冯唐时间管理手账",
     author:"冯唐",
     publisher:"北京联合出版有限公司",
-    cover:"http://img3m5.ddimg.cn/37/6/28983475-1_u_13.jpg"
+    cover:"http://img3m5.ddimg.cn/37/6/28983475-1_u_13.jpg",
+    distance:30
   }],
   [{
     id:2,
     name:"灵光集：兰波诗歌集注",
     author:"阿蒂尔·兰波",
     publisher:"商务印书馆",
-    cover:"http://img3m8.ddimg.cn/70/3/29133988-1_u_3.jpg"
+    cover:"http://img3m8.ddimg.cn/70/3/29133988-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:3,
     name:"卡梅里亚的哲学世界",
     author:"胡安·安东尼奥·里维拉",
     publisher:"海南出版社",
-    cover:"http://img3m0.ddimg.cn/83/24/29140040-3_u_9.jpg"
+    cover:"http://img3m0.ddimg.cn/83/24/29140040-3_u_9.jpg",
+    distance:30
   }],
   [{
     id:4,
     name:"古代人的日常生活",
     author:"讲历史的王老师",
     publisher:"江苏凤凰文艺出版社",
-    cover:"http://img3m2.ddimg.cn/14/2/28509242-1_u_3.jpg"
+    cover:"http://img3m2.ddimg.cn/14/2/28509242-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:5,
     name:"书信里的逝水年华—钱锺书与我",
     author:"许渊冲",
     publisher:"江西美术出版社",
-    cover:"http://img3m8.ddimg.cn/84/16/29137368-2_u_7.jpg"
+    cover:"http://img3m8.ddimg.cn/84/16/29137368-2_u_7.jpg",
+    distance:30
   }],
   [{
     id:6,
     name:"漫画诺贝尔科学家：物理学奖",
     author:"胖乐胖乐",
     publisher:"湖南科技出版社",
-    cover:"http://img3m2.ddimg.cn/42/9/29136732-1_u_3.jpg"
+    cover:"http://img3m2.ddimg.cn/42/9/29136732-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:7,
     name:"星光的速度",
     author:"科林·斯图尔特 提莫·阿巴迪亚",
     publisher:"辽宁少年儿童出版社",
-    cover:"http://img3m2.ddimg.cn/52/20/28517992-1_w_2.jpg"
+    cover:"http://img3m2.ddimg.cn/52/20/28517992-1_w_2.jpg",
+    distance:30
   }],
   [{
     id:8,
     name:"众神的战争:希腊神话与西方艺术",
     author:"江逐浪",
     publisher:"化学工业出版社",
-    cover:"http://img3m3.ddimg.cn/66/19/29150913-2_u_13.jpg"
+    cover:"http://img3m3.ddimg.cn/66/19/29150913-2_u_13.jpg",
+    distance:30
   }],
   [{
     id:9,
     name:"浮生六记",
     author:"沈复",
     publisher:"时代文艺出版社",
-    cover:"http://img3m4.ddimg.cn/46/23/26487694-2_u_1.jpg"
+    cover:"http://img3m4.ddimg.cn/46/23/26487694-2_u_1.jpg",
+    distance:30
   }],
   [{
     id:10,
     name:"文豪日历2021",
     author:"人民文学出版社外国文学编辑室",
     publisher:"人民文学出版社",
-    cover:"http://img3m4.ddimg.cn/48/32/28991604-1_u_3.jpg"
+    cover:"http://img3m4.ddimg.cn/48/32/28991604-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:11,
     name:"掬水月在手：镜中的叶嘉莹",
     author:"行人文化 活字文化",
     publisher:"四川人民出版社",
-    cover:"http://img3m5.ddimg.cn/3/22/29137485-3_u_17.jpg"
+    cover:"http://img3m5.ddimg.cn/3/22/29137485-3_u_17.jpg",
+    distance:30
   }],
   [{
     id:12,
     name:"烟火漫卷",
     author:"迟子建",
     publisher:"人民文学出版社",
-    cover:"http://img3m3.ddimg.cn/7/6/29124223-1_u_3.jpg"
+    cover:"http://img3m3.ddimg.cn/7/6/29124223-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:13,
     name:"趣说中国史",
     author:"趣哥",
     publisher:"台海出版社",
-    cover:"http://img3m1.ddimg.cn/98/3/29151341-1_u_6.jpg"
+    cover:"http://img3m1.ddimg.cn/98/3/29151341-1_u_6.jpg",
+    distance:30
   }],
   [{
     id:14,
     name:"半小时漫画经济学4：理财篇",
     author:"陈磊 半小时漫画团队",
     publisher:"海南出版社",
-    cover:"http://img3m0.ddimg.cn/25/13/29128300-1_u_4.jpg"
+    cover:"http://img3m0.ddimg.cn/25/13/29128300-1_u_4.jpg",
+    distance:30
   }],
   [{
     id:15,
     name:"培养孩子的社会情商",
     author:"叶如风",
     publisher:"中国妇女出版社",
-    cover:"http://img3m3.ddimg.cn/56/34/29140013-1_u_6.jpg"
+    cover:"http://img3m3.ddimg.cn/56/34/29140013-1_u_6.jpg",
+    distance:30
   }],
   [{
     id:16,
     name:"永远不要停下前进的脚步",
     author:"石雷鹏",
     publisher:"天地出版社",
-    cover:"http://img3m1.ddimg.cn/61/21/29145661-1_u_12.jpg"
+    cover:"http://img3m1.ddimg.cn/61/21/29145661-1_u_12.jpg",
+    distance:30
   }],
   [{
     id:17,
     name:"你想过怎样的一生",
     author:"海克·法勒",
     publisher:"北京联合出版有限公司",
-    cover:"http://img3m0.ddimg.cn/55/35/29133280-1_u_8.jpg"
+    cover:"http://img3m0.ddimg.cn/55/35/29133280-1_u_8.jpg",
+    distance:30
   }],
   [{
     id:18,
     name:"人生随时可以重来",
     author:"摩西奶奶",
     publisher:"北京日报出版社（原同心出版社）",
-    cover:"http://img3m5.ddimg.cn/63/14/28978155-1_u_3.jpg"
+    cover:"http://img3m5.ddimg.cn/63/14/28978155-1_u_3.jpg",
+    distance:30
   }],
   [{
     id:19,
     name:"回归故里",
     author:"迪迪埃·埃里蓬",
     publisher:"上海文化出版社",
-    cover:"http://img3m3.ddimg.cn/28/11/28559053-2_u_16.jpg"
+    cover:"http://img3m3.ddimg.cn/28/11/28559053-2_u_16.jpg",
+    distance:30
   }],
   [{
     id:20,
     name:"董其昌传",
     author:"孙炜",
     publisher:"广西师范大学出版社",
-    cover:"http://img3m7.ddimg.cn/11/26/29114327-3_u_8.jpg"
+    cover:"http://img3m7.ddimg.cn/11/26/29114327-3_u_8.jpg",
+    distance:30
   }]
 ]
 

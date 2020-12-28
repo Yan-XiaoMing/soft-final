@@ -11,8 +11,12 @@ import {
 import {
   reducer as frameReducer
 } from '../pages/container/store'
+import {
+  reducer as bookDataReducer
+} from './borrow'
 export default combineReducers({
-  login: loginReducer,
+  loginUser: loginReducer,
   borrow: borrowReducer, //借书
-  frame: frameReducer
+  frame: frameReducer,
+  bookData:bookDataReducer
 })

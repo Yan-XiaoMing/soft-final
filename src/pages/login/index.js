@@ -1,7 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react'
-import {Form, Input, Button, Tooltip, Divider, message} from 'antd';
+import {Form, Input, Button, Divider, message} from 'antd';
 import {UserOutlined, LockOutlined, EyeTwoTone, EyeInvisibleOutlined} from '@ant-design/icons';
-import * as Yup from 'yup'
 import background from '../../assets/img/bg.png';
 import logo from '../../assets/img/hznu-logo.png';
 import Title from "./components/title/title";
@@ -9,11 +8,14 @@ import {useDebounce} from '../../components/debounce/debounce.hook'
 import Oauth from "./components/oauth";
 import Agreement from "./components/agreement";
 import Register from "./components/register";
+import {checkResponse, validatePhone} from "../../utils/utils";
+import {getPhoneCode, phoneLogin, userLogin} from "../../api/user";
+import {connect} from "react-redux";
+import { loginUser } from './store/actionCreators'
 import './style.styl'
 import './style.less'
-import {validatePhone} from "../../utils/utils";
 
-const Login = (props) => {
+const Login = ({handleLoginUser,history}) => {
   const [showType, setShowType] = useState(1)
   let [timer, setTimer] = useState(60)
   const timeout = useRef(null)
@@ -32,30 +34,45 @@ const Login = (props) => {
     }
   }, [timer])
 
-  const codeClick = () => {
-    console.log(timeout)
+  const codeClick = async () => {
+    const validate = await form.validateFields(['phone'])
+    console.log(validate)
     if (timeout.current) {
       message.warn('请稍后再获取验证码')
     } else {
-      timeout.current = setTimeout(() => {
-        setTimer(c=>c-1)
-      }, 1000)
+      const result = await getPhoneCode(validate.phone)
+      console.log(result)
+      if(checkResponse(result)){
+        timeout.current = setTimeout(() => {
+          setTimer(c=>c-1)
+        }, 1000)
+      }
     }
   }
 
   const handleCodeClick = useDebounce(codeClick, 100)
 
-  const onFinish = () => {
+  const onFinish = async () => {
+    const value = form.getFieldsValue()
+    let result = null
+    console.log(value)
     if(showType === 1){ //学号登录
-
+      result = await userLogin(value)
     }
     else{ //短信登录
-
+      result = await phoneLogin(value)
     }
-    const {history} = props
-    history.replace('/')
+    console.log(result)
+    if(checkResponse(result)){
+      const {data} = result.data
+      handleLoginUser(data)
+      message.success('登录成功')
+      history.replace('/')
+    }
+    else{
+      message.error('用户名或密码错误')
+    }
   }
-
   return (
     <div className='login-wrapper' style={{
       backgroundImage: `url(${background})`,
@@ -125,7 +142,7 @@ const Login = (props) => {
                 </Form.Item>
                 <div style={{display: "flex"}}>
                   <Form.Item
-                    name="password"
+                    name="code"
                     rules={[
                       {
                         required: true,
@@ -165,4 +182,10 @@ const Login = (props) => {
   )
 }
 
-export default Login
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleLoginUser:(user) => dispatch(loginUser(user))
+  }
+}
+
+export default connect(null,mapDispatchToProps)(Login)
