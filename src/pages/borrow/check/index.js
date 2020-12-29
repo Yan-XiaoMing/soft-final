@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { Card, List, Avatar, Space, Button, Spin, Tag, message } from 'antd'
 import { MessageOutlined, LikeOutlined, StarOutlined } from '@ant-design/icons'
+import bookData from '../../../config/mock/books'
 import { connect } from 'react-redux'
 import { actionCreators as frameac} from '../../container/store'
 import { actionCreators } from '../store'
 import './style.styl'
 import { Redirect,useHistory } from 'react-router-dom'
+import {deleteShopList} from "../../../store/borrow/actionCreators";
+import pannelData from "../../../config/mock/pannelData";
 
 const Check = (props) => {
   const history = useHistory()
   const [next,setNext] = useState(false) //是否可以到下一步
   const [listData, setListData] = useState([]) //列表数据
-  let { isBorrowing, bookData } = props //获取redux中的数据
+  let { shopList, borrowBooks } = props //获取redux中的数据
   //进入后首先将select设置为1，获取从搜索产生的待借阅的图书
   useEffect(() => {
     props.changeStep(0)
-    let newListData = listData.concat()
-
   }, [])
 
+  useEffect(()=>{
+    if(shopList.length - 1 > 0){
+      setNext(true)
+    }
+    else{
+      setNext(false)
+    }
+  },[shopList])
+
   //按照书的状态生成字符串
-  const bookStateToString = (state) => {
+  const bookStateToString = (state = 1) => {
     if (state >= 1)
       return '可借'
     else
@@ -35,30 +45,37 @@ const Check = (props) => {
       return '#f50'
   }
 
-  //对某一本书取消借阅
-  const cancelBorrow = (index) => {
-    console.log(props.bookData)
-    if(listData.length - 1 > 0)
-       setNext(true)
-    else setNext(false)
-    let newListData = listData.concat([])
-    newListData.splice(index, 1)
-    setListData(newListData)
-    let newBookData = null
-    if(typeof props.bookData._tail !== 'undefined')
-       newBookData = props.bookData._tail.array.concat([])
-    else
-       newBookData = props.bookData
-    newBookData.splice(index, 1)
-    props.commitBorrowBook(newBookData)
+  const cancelBorrow = (id,index) => {
+    let book = null
+    for(let item of bookData){
+      if(item[0].id == id){
+        book = item[0]
+        break
+      }
+    }
+    props.deleteShopList(book)
+    message.success('移除成功')
   }
+
+  // //对某一本书取消借阅
+  // const cancelBorrow = (index) => {
+  //
+  //   let newListData = shopList.concat([])
+  //   newListData.splice(index, 1)
+  //   setListData(newListData)
+  //   let newBookData = null
+  //   if(typeof props.bookData._tail !== 'undefined')
+  //      newBookData = props.bookData._tail.array.concat([])
+  //   else
+  //      newBookData = props.bookData
+  //   newBookData.splice(index, 1)
+  //   props.commitBorrowBook(newBookData)
+  // }
 
   //提交图书
   const commitBook = () => {
-    props.modifyListData(listData)
     history.push('/index/borrow/inspect')
   }
-
 
   return (
     <div className="readrfidWrapper">
@@ -67,7 +84,7 @@ const Check = (props) => {
           请在下方操作您要借阅的图书，如果您希望添加新图书，请<span className="link" onClick={()=>history.push('/index/search')}>前往“搜索”页面</span>来添加新图书。
         </p>
         <p>
-          <span className="strong">建议:</span>您当前还有{isBorrowing}本书在借阅中，建议您先归还图书，再进行借阅。
+          <span className="strong">建议:</span>您当前还有{borrowBooks.length}本书在借阅中，建议您先归还图书，再进行借阅。
         </p>
       </Card>
       <List
@@ -75,7 +92,7 @@ const Check = (props) => {
         bordered={true}
         itemLayout="vertical"
         size="large"
-        dataSource={listData}
+        dataSource={shopList}
         footer={
           <div className="footer">
             <Button disabled={!next} onClick={() => commitBook()}>下一步</Button>
@@ -89,19 +106,18 @@ const Check = (props) => {
               <Button
                 type="link"
                 danger
-                onClick={() => cancelBorrow(index)}
+                onClick={() => cancelBorrow(item.id)}
+                style={{padding:'5px 0'}}
               >
                 取消借阅
               </Button>,
             ]}
-            extra={<img width={150} alt="图书的图片" src={item.cover} />}
+            extra={<img width={100} alt="图书的图片" src={item.cover} />}
           >
             <List.Item.Meta
               title={<div>{item.name}</div>}
               description={
                 <div>
-                  <Tag>ID:{item.id}</Tag>
-                  <Tag>ISBN:{item.iSBN}</Tag>
                   <Tag>作者:{item.author}</Tag>
                   <Tag>出版:{item.publisher}</Tag>
                   <Tag color={bookStateToColor(item.state)}>
@@ -111,7 +127,6 @@ const Check = (props) => {
                 </div>
               }
             />
-            {item.summary}
           </List.Item>
         )}
       />
@@ -120,7 +135,8 @@ const Check = (props) => {
 }
 
 const mapState = (state) => ({
-
+  borrowBooks: state.bookData.borrowBooks,
+  shopList: state.bookData.shopList,
   isBorrowing: state.frame.get('isBorrowing'),
   bookData: state.borrow.get('bookData'),
 })
@@ -138,6 +154,7 @@ const mapDispatch = (dispatch) => ({
   modifyShowAlert(show, message, type) {
     dispatch(frameac.modifyShowAlert(show, message, type))
   },
+  deleteShopList:(book)=>dispatch(deleteShopList(book))
 })
 
 export default connect(mapState, mapDispatch)(Check)

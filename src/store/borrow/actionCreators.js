@@ -1,4 +1,4 @@
-import {ADD_BORROW, ADD_SHOPLIST, DELETE_BORROW, DELETE_SHOPLIST} from "./constants";
+import {ADD_BORROW, ADD_SHOPLIST, DELETE_BORROW, DELETE_SHOPLIST, UPDATE_DISTANCE} from "./constants";
 
 export const addBorrow = (shopList = []) => ({
   type:ADD_BORROW,
@@ -18,4 +18,9 @@ export const addShopList = (book) =>  ({
 export const deleteShopList = (book) => ({
   type:DELETE_SHOPLIST,
   data:book
+})
+
+export const updateDistance = (borrowBooks) => ({
+  type: UPDATE_DISTANCE,
+  data:borrowBooks
 })

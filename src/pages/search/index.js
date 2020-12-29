@@ -5,7 +5,7 @@ import {makeStyles} from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import InputBase from '@material-ui/core/InputBase'
 import books from "../../config/mock/books";
-import {Drawer, Divider, Timeline, message} from 'antd';
+import {Drawer,Timeline, message} from 'antd';
 import {BookOutlined, NumberOutlined, UserOutlined} from '@ant-design/icons'
 import IconButton from '@material-ui/core/IconButton'
 import Button from '@material-ui/core/Button'

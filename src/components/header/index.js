@@ -46,6 +46,9 @@ const Header = props => {
           <div className='header-router-wrapper'>
             <Nav.Link className="header_link" onClick={() => history.push('/index/renew')}>续借 / 归还</Nav.Link>
           </div>
+          <div className='header-router-wrapper'>
+            <Nav.Link className="header_link" onClick={() => history.push('/index/visit')}>场馆实景</Nav.Link>
+          </div>
         </Nav>
         <Nav>
           <div className="header-user-info">

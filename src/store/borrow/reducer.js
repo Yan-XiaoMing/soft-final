@@ -1,15 +1,16 @@
 import {borrowState} from '../../config/mock/borrow'
-import {ADD_BORROW, ADD_SHOPLIST, DELETE_BORROW, DELETE_SHOPLIST} from "./constants";
+import {ADD_BORROW, ADD_SHOPLIST, DELETE_BORROW, DELETE_SHOPLIST, UPDATE_DISTANCE} from "./constants";
 import {deleteItemInArr} from "../../utils/utils";
 
 const defaultState = borrowState
 
 export default (state = defaultState, action) => {
+  console.log(action)
   switch (action.type){
     case ADD_BORROW:
       return {
         shopList: [],
-        borrowBooks: state.borrowBooks.concat(action.shopList)
+        borrowBooks: state.borrowBooks.concat(action.data)
       }
     case DELETE_BORROW:
       const newBorrow = deleteItemInArr(state.borrowBooks,action.data)
@@ -30,6 +31,12 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         shopList: newShopList || []
+      }
+    case UPDATE_DISTANCE:
+      console.log('updateDistance')
+      return {
+        ...state,
+        borrowBooks: [].concat(action.data)
       }
     default:
       return state

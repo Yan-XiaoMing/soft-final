@@ -11,44 +11,24 @@ import DoneAllIcon from '@material-ui/icons/DoneAll';
 import './style.styl'
 const Process = props => {
   let history = useHistory()
-  const [uploading, setUploading] = useState(true) 
+  const [uploading, setUploading] = useState(true)
   const [success,setSuccess] = useState(0)
   const [serial,setSerial] =useState("") //保存获得的订单号
   useEffect(() => {
+    setTimeout(()=>{
+      setUploading(false)
+      setSuccess(1)
+    },2000)
     if(props.bookData.size === 0 && props.step !== 1)
         history.replace('/index/borrow/check')
      props.changeStep()
   }, [])
-
-  //页面挂载去提交订单
-  useEffect(()=>{
-    //如果没有数据，就回到search页面
-   
-    Axios.post('/api/book/borrow',{
-      books:props.bookData.map(Number)
-    }).then(res=>{
-      console.log(res)
-      if(res.result === 1){
-          setUploading(false)
-          setSuccess(1)
-          setSerial(res.serial)
-          props.commitBorrowBook([])
-      }else{
-          setUploading(false)
-          setSuccess(-1)
-          props.modifyShowAlert(true,"借书订单提交失败",'error')
-      }
-    })
-  },[])
 
     return (
       <div className="processbookWrapper">
         <Card title="温馨提示" bordered={false} size="small" className="tipsCard">
         <p>
          <span className="important">请不要退出</span>，耐心等待借书订单的生成。
-        </p>
-        <p>
-        <span className="strong">建议:</span>若您不想要提交这个订单，您可以在订单生成的3分钟内取消该借书订单。
         </p>
       </Card>
         <Spin  tip="提交借书订单中，请不要退出，耐心等待..." spinning={uploading}>

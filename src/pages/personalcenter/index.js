@@ -90,7 +90,6 @@ const PersonalCenter = props => {
     shopList
   } = props
   //验证是否登录
-  console.log(props)
 
   const gridStyle = {
     width: '100%',

@@ -70,7 +70,12 @@ const Login = ({handleLoginUser,history}) => {
       history.replace('/')
     }
     else{
-      message.error('用户名或密码错误')
+      if(showType === 1){
+        message.error('用户名或密码错误')
+      }
+      else{
+        message.error('验证码有误或已过期')
+      }
     }
   }
   return (

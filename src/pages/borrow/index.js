@@ -15,8 +15,6 @@ const Borrow = (props) => {
   let history = useHistory()
   // 获取store中的数据
   let {
-    hasBorrowed,
-    isBorrowing,
     step,
     identity,
     user,
@@ -43,7 +41,7 @@ const Borrow = (props) => {
     <div className="borrowWrapper">
       <div className="stepBar">
         <Steps current={step}>
-          <Step title="操作图书" description="操作您要借阅的书籍" />
+          <Step title="选择图书" description="选择您要借阅的书籍" />
           <Step title="确认图书" description="确认您要借阅的书籍" />
           <Step  title="提交借书订单" description="提交您的书单"
           />

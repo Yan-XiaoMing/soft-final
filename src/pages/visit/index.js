@@ -4,7 +4,7 @@ import './style.less'
 const Visit = () => {
   return (
     <div className='visit-wrapper'>
-      <iframe src='https://vr.realsee.cn/vr/6gyq3v1NRYaD7JO1/QJyOozqughrg2bdqVD9DsOckg6ZYcDL9/?refer_from=vrcapp_edit#lianjia'/>
+      <iframe src='https://vr.realsee.cn/vr/lyEPD4eb2XK3zaAV/4LqNmzqSxhgGPdBXMpzpc7cgG9w5Cr89/?refer_from=vrcapp_edit#lianjia'/>
     </div>
   );
 };
